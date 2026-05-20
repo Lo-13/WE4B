@@ -1,0 +1,40 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build outputs
+dist/
+out/
+build/
+.angular/
+.angular-cache/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+
+# Caches
+.cache/
+.parcel-cache/
+
+# Misc
+.serverless/
+.turbo/
+.next/
+.vite/
+.sass-cache/
