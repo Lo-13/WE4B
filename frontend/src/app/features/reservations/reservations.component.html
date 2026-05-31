@@ -1,0 +1,45 @@
+<section class="app-page space-y-6">
+  <div>
+    <p class="eyebrow">Administration</p>
+    <h1 class="mt-2 text-3xl font-semibold text-white">Reservations</h1>
+    <p class="mt-2 text-slate-300">Route protegee par role admin ou super-admin.</p>
+  </div>
+
+  <div class="glass-panel overflow-hidden">
+    <table class="w-full min-w-[42rem] text-left text-sm">
+      <thead class="bg-white/10 text-slate-300">
+        <tr>
+          <th class="px-4 py-3 font-semibold">Salle</th>
+          <th class="px-4 py-3 font-semibold">Client</th>
+          <th class="px-4 py-3 font-semibold">Date</th>
+          <th class="px-4 py-3 font-semibold">Duree</th>
+          <th class="px-4 py-3 font-semibold">Statut</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-white/10">
+        @if (reservations$ | async; as reservations) {
+          @for (reservation of reservations; track reservation.id) {
+            <tr>
+              <td class="px-4 py-4 font-medium text-white">{{ reservation.roomName }}</td>
+              <td class="px-4 py-4 text-slate-300">{{ reservation.customerName }}</td>
+              <td class="px-4 py-4 text-slate-300">{{ reservation.startDate | date: 'dd/MM/yyyy' }} {{ reservation.startTime }}</td>
+              <td class="px-4 py-4 text-slate-300">{{ reservation.duration }} h</td>
+              <td class="px-4 py-4">
+                <span
+                  class="rounded-full px-3 py-1 text-xs font-semibold"
+                  [ngClass]="{
+                    'bg-emerald-300/15 text-emerald-200': reservation.status === 'confirmed',
+                    'bg-amber-300/15 text-amber-200': reservation.status === 'pending',
+                    'bg-red-300/15 text-red-200': reservation.status === 'cancelled'
+                  }"
+                >
+                  {{ reservation.status }}
+                </span>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

@@ -1,0 +1,10 @@
+:host {
+  display: block;
+}
+
+a,
+button,
+input,
+select {
+  letter-spacing: 0;
+}

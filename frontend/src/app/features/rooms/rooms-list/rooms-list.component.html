@@ -1,0 +1,48 @@
+<section class="app-page space-y-6">
+  <div class="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+    <div>
+      <p class="eyebrow">Catalogue</p>
+      <h1 class="mt-2 text-3xl font-semibold text-white">Salles disponibles</h1>
+    </div>
+
+    <div class="grid gap-3 sm:grid-cols-3">
+      <input
+        class="field"
+        type="search"
+        placeholder="Rechercher"
+        [ngModel]="search()"
+        (ngModelChange)="search.set($event)"
+      />
+      <select
+        class="field"
+        [ngModel]="city()"
+        (ngModelChange)="city.set($event)"
+      >
+        <option value="all">Toutes les villes</option>
+        <option value="Belfort">Belfort</option>
+        <option value="Montbeliard">Montbeliard</option>
+        <option value="Sevenans">Sevenans</option>
+      </select>
+      <select
+        class="field"
+        [ngModel]="sortMode()"
+        (ngModelChange)="updateSortMode($event)"
+      >
+        <option value="name">Nom</option>
+        <option value="price-asc">Prix croissant</option>
+        <option value="price-desc">Prix decroissant</option>
+        <option value="capacity-desc">Capacite</option>
+      </select>
+    </div>
+  </div>
+
+  @if (visibleRooms$ | async; as rooms) {
+    <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      @for (room of rooms; track room.id) {
+        <app-room-card [room]="room" (selected)="openRoom($event)" />
+      } @empty {
+        <p class="panel-light p-6 text-slate-300">Aucune salle ne correspond aux filtres.</p>
+      }
+    </div>
+  }
+</section>

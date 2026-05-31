@@ -1,0 +1,28 @@
+<section class="mx-auto grid min-h-[calc(100vh-5rem)] w-full max-w-5xl place-items-center px-6 py-8">
+  <form class="glass-panel w-full max-w-md p-6" (ngSubmit)="login()">
+    <p class="eyebrow">Connexion</p>
+    <h1 class="mt-2 text-3xl font-semibold text-white">Acceder a Gaming Rooms</h1>
+    <p class="mt-3 text-sm leading-6 text-slate-300">
+      Demo : b@gamingrooms.fr, a@gamingrooms.fr ou j@gamingrooms.fr
+    </p>
+
+    <label class="mt-6 block text-sm font-medium text-slate-200" for="email">Email</label>
+    <input
+      id="email"
+      name="email"
+      type="email"
+      class="field mt-2 w-full"
+      [ngModel]="email()"
+      (ngModelChange)="email.set($event)"
+      required
+    />
+
+    @if (error()) {
+      <p class="mt-3 rounded-md bg-red-300/15 px-3 py-2 text-sm text-red-200">{{ error() }}</p>
+    }
+
+    <button type="submit" class="btn-primary mt-6 w-full">
+      Se connecter
+    </button>
+  </form>
+</section>

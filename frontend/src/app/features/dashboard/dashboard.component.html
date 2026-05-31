@@ -1,0 +1,31 @@
+<section class="app-page">
+  <div class="glass-panel p-8">
+    <p class="eyebrow">Gaming Rooms</p>
+    <h1 class="mt-4 text-4xl font-semibold">
+      @if (user()) {
+        Bonjour {{ user()?.name }}
+      } @else {
+        Reservez votre salle gaming
+      }
+    </h1>
+    <p class="mt-4 max-w-2xl leading-7 text-slate-300">
+      Reservez votre salle gaming, consultez les espaces disponibles et suivez vos demandes depuis une interface moderne.
+    </p>
+
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a class="btn-primary" routerLink="/rooms">
+        Explorer les salles
+      </a>
+      @if (!user()) {
+        <a class="btn-secondary" routerLink="/login">
+          Se connecter
+        </a>
+      }
+      @if (canManageReservations()) {
+        <a class="btn-secondary" routerLink="/reservations">
+          Gerer les reservations
+        </a>
+      }
+    </div>
+  </div>
+</section>
