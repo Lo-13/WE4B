@@ -27,6 +27,7 @@ export class ReservationFormComponent {
   readonly playerCount = signal(4);
   readonly message = signal('');
   readonly error = signal('');
+  readonly isSubmitting = signal(false);
 
   readonly user = this.authService.currentUser;
   readonly room$ = this.route.paramMap.pipe(
@@ -49,6 +50,9 @@ export class ReservationFormComponent {
       return;
     }
 
+    this.isSubmitting.set(true);
+    this.error.set('');
+
     this.reservationsService
       .createReservation({
         userId: user.id,
@@ -61,10 +65,18 @@ export class ReservationFormComponent {
         playerCount: this.playerCount(),
         hourlyPrice,
       })
-      .subscribe(() => {
-        this.message.set('Reservation envoyee. Elle apparait maintenant dans Mes reservations.');
-        this.error.set('');
-        this.router.navigateByUrl('/my-reservations');
+      .subscribe({
+        next: () => {
+          this.message.set('Reservation envoyee. Elle apparait maintenant dans Mes reservations.');
+          this.error.set('');
+          this.isSubmitting.set(false);
+          this.router.navigateByUrl('/my-reservations');
+        },
+        error: (error) => {
+          this.isSubmitting.set(false);
+          this.message.set('');
+          this.error.set(error?.error?.message ?? 'La reservation n a pas pu etre creee. Verifie la salle, la date et le nombre de joueurs.');
+        },
       });
   }
 }

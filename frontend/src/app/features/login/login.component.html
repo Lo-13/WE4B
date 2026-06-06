@@ -1,10 +1,62 @@
 <section class="mx-auto grid min-h-[calc(100vh-5rem)] w-full max-w-5xl place-items-center px-6 py-8">
-  <form class="glass-panel w-full max-w-md p-6" (ngSubmit)="login()">
-    <p class="eyebrow">Connexion</p>
-    <h1 class="mt-2 text-3xl font-semibold text-white">Acceder a Gaming Rooms</h1>
+  <form class="glass-panel w-full max-w-md p-6" (ngSubmit)="submit()">
+    <p class="eyebrow">{{ mode() === 'login' ? 'Connexion' : 'Inscription' }}</p>
+    <h1 class="mt-2 text-3xl font-semibold text-white">{{ title() }}</h1>
     <p class="mt-3 text-sm leading-6 text-slate-300">
-      Demo : b@gamingrooms.fr, a@gamingrooms.fr ou j@gamingrooms.fr
+      Comptes disponibles : b@gamingrooms.fr, a@gamingrooms.fr ou j@gamingrooms.fr
     </p>
+
+    <div class="mt-6 grid grid-cols-2 gap-2 rounded-md bg-white/5 p-1">
+      <button
+        type="button"
+        class="rounded px-3 py-2 text-sm font-medium"
+        [class.bg-sky-300]="mode() === 'login'"
+        [class.text-slate-950]="mode() === 'login'"
+        [class.text-slate-300]="mode() !== 'login'"
+        (click)="switchMode('login')"
+      >
+        Connexion
+      </button>
+      <button
+        type="button"
+        class="rounded px-3 py-2 text-sm font-medium"
+        [class.bg-sky-300]="mode() === 'register'"
+        [class.text-slate-950]="mode() === 'register'"
+        [class.text-slate-300]="mode() !== 'register'"
+        (click)="switchMode('register')"
+      >
+        Inscription
+      </button>
+    </div>
+
+    @if (mode() === 'register') {
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        <label class="block text-sm font-medium text-slate-200" for="name">
+          Prenom
+          <input
+            id="name"
+            name="name"
+            type="text"
+            class="field mt-2 w-full"
+            [ngModel]="name()"
+            (ngModelChange)="name.set($event)"
+            required
+          />
+        </label>
+        <label class="block text-sm font-medium text-slate-200" for="lastName">
+          Nom
+          <input
+            id="lastName"
+            name="lastName"
+            type="text"
+            class="field mt-2 w-full"
+            [ngModel]="lastName()"
+            (ngModelChange)="lastName.set($event)"
+            required
+          />
+        </label>
+      </div>
+    }
 
     <label class="mt-6 block text-sm font-medium text-slate-200" for="email">Email</label>
     <input
@@ -17,12 +69,40 @@
       required
     />
 
+    @if (mode() === 'register') {
+      <div class="mt-4 grid gap-4 sm:grid-cols-[1fr_7rem]">
+        <label class="block text-sm font-medium text-slate-200" for="password">
+          Mot de passe
+          <input
+            id="password"
+            name="password"
+            type="password"
+            class="field mt-2 w-full"
+            [ngModel]="password()"
+            (ngModelChange)="password.set($event)"
+          />
+        </label>
+        <label class="block text-sm font-medium text-slate-200" for="age">
+          Age
+          <input
+            id="age"
+            name="age"
+            type="number"
+            min="13"
+            class="field mt-2 w-full"
+            [ngModel]="age()"
+            (ngModelChange)="age.set($event)"
+          />
+        </label>
+      </div>
+    }
+
     @if (error()) {
       <p class="mt-3 rounded-md bg-red-300/15 px-3 py-2 text-sm text-red-200">{{ error() }}</p>
     }
 
     <button type="submit" class="btn-primary mt-6 w-full">
-      Se connecter
+      {{ submitLabel() }}
     </button>
   </form>
 </section>

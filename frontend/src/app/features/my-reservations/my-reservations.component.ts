@@ -1,6 +1,7 @@
 import { AsyncPipe, CurrencyPipe, DatePipe, NgClass } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Subject, switchMap, startWith } from 'rxjs';
 
 import { AuthService } from '../../core/services/auth.service';
 import { Reservation, ReservationsService } from '../../core/services/reservations.service';
@@ -18,9 +19,13 @@ export class MyReservationsComponent {
   readonly user = this.authService.currentUser;
   readonly rating = signal(8);
   readonly commentText = signal('');
+  private readonly refreshReservations$ = new Subject<void>();
   readonly reservations$ = computed(() => {
     const user = this.user();
-    return this.reservationsService.getReservationsByUser(user?.id ?? 0);
+    return this.refreshReservations$.pipe(
+      startWith(undefined),
+      switchMap(() => this.reservationsService.getReservationsByUser(user?.id ?? 0)),
+    );
   });
 
   isHistoric(reservation: Reservation): boolean {
@@ -34,11 +39,15 @@ export class MyReservationsComponent {
       return;
     }
 
-    this.reservationsService.addComment(reservationId, {
-      rating: this.rating(),
-      content,
-      date: new Date().toISOString().slice(0, 10),
-    });
-    this.commentText.set('');
+    this.reservationsService
+      .addComment(reservationId, {
+        rating: this.rating(),
+        content,
+        date: new Date().toISOString().slice(0, 10),
+      })
+      .subscribe(() => {
+        this.commentText.set('');
+        this.refreshReservations$.next();
+      });
   }
 }

@@ -1,8 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../core/services/auth.service';
+
+type AuthMode = 'login' | 'register';
 
 @Component({
   selector: 'app-login',
@@ -14,17 +16,60 @@ export class LoginComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
+  readonly mode = signal<AuthMode>('login');
   readonly email = signal('b@gamingrooms.fr');
+  readonly password = signal('');
+  readonly name = signal('');
+  readonly lastName = signal('');
+  readonly age = signal(18);
   readonly error = signal('');
 
-  login(): void {
-    const isLoggedIn = this.authService.login(this.email());
+  readonly title = computed(() => (this.mode() === 'login' ? 'Acceder a Gaming Rooms' : 'Creer un compte client'));
+  readonly submitLabel = computed(() => (this.mode() === 'login' ? 'Se connecter' : 'Creer le compte'));
 
-    if (!isLoggedIn) {
-      this.error.set('Compte inconnu pour la demo.');
+  submit(): void {
+    if (this.mode() === 'login') {
+      this.login();
       return;
     }
 
-    this.router.navigateByUrl('/dashboard');
+    this.register();
+  }
+
+  switchMode(mode: AuthMode): void {
+    this.mode.set(mode);
+    this.error.set('');
+  }
+
+  private login(): void {
+    this.authService.login(this.email()).subscribe({
+      next: () => {
+        this.error.set('');
+        this.router.navigateByUrl('/dashboard');
+      },
+      error: () => {
+        this.error.set('Compte inconnu.');
+      },
+    });
+  }
+
+  private register(): void {
+    this.authService
+      .register({
+        name: this.name(),
+        lastName: this.lastName(),
+        email: this.email(),
+        password: this.password(),
+        age: this.age(),
+      })
+      .subscribe({
+        next: () => {
+          this.error.set('');
+          this.router.navigateByUrl('/dashboard');
+        },
+        error: () => {
+          this.error.set('Impossible de creer ce compte. Verifie les champs ou utilise un autre email.');
+        },
+      });
   }
 }

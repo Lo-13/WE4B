@@ -36,7 +36,9 @@
           <p class="rounded-md bg-emerald-300/15 px-3 py-2 text-sm text-emerald-200">{{ message() }}</p>
         }
 
-        <button class="btn-primary" type="submit">Confirmer la reservation</button>
+        <button class="btn-primary" type="submit" [disabled]="isSubmitting()">
+          {{ isSubmitting() ? 'Envoi...' : 'Confirmer la reservation' }}
+        </button>
       </form>
 
       <aside class="rounded-lg border border-white/10 bg-slate-950/70 p-5">
