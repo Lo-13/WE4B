@@ -1,0 +1,24 @@
+### Test 1 : Vérifier que le backend répond
+GET http://localhost:3000
+###
+
+#Test 2 : Insérer un log (POST)
+POST http://localhost:3000/logs
+Content-Type: application/json
+{
+  "userId": "test123",
+  "userEmail": "b@gamingrooms.fr",
+  "role": "client",
+  "action": "LOGIN",
+  "details": { "ip": "127.0.0.1" }
+}
+
+#
+
+# Test 3 : Lire tous les logs (GET)
+GET http://localhost:3000/logs
+
+###
+
+### Test 4 : Lire les statistiques
+GET http://localhost:3000/logs/stats
