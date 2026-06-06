@@ -1,4 +1,4 @@
-import { AsyncPipe, CurrencyPipe, DatePipe, NgClass } from '@angular/common';
+﻿import { AsyncPipe, CurrencyPipe, DatePipe, NgClass } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -18,7 +18,9 @@ export class MyReservationsComponent {
   readonly user = this.authService.currentUser;
   readonly rating = signal(8);
   readonly commentText = signal('');
+  readonly refreshKey = signal(0);
   readonly reservations$ = computed(() => {
+    this.refreshKey();
     const user = this.user();
     return this.reservationsService.getReservationsByUser(user?.id ?? 0);
   });
@@ -34,11 +36,15 @@ export class MyReservationsComponent {
       return;
     }
 
-    this.reservationsService.addComment(reservationId, {
-      rating: this.rating(),
-      content,
-      date: new Date().toISOString().slice(0, 10),
-    });
-    this.commentText.set('');
+    this.reservationsService
+      .addComment(reservationId, {
+        rating: this.rating(),
+        content,
+        date: new Date().toISOString().slice(0, 10),
+      })
+      .subscribe(() => {
+        this.commentText.set('');
+        this.refreshKey.update((value) => value + 1);
+      });
   }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+﻿import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -18,13 +18,14 @@ export class LoginComponent {
   readonly error = signal('');
 
   login(): void {
-    const isLoggedIn = this.authService.login(this.email());
-
-    if (!isLoggedIn) {
-      this.error.set('Compte inconnu pour la demo.');
-      return;
-    }
-
-    this.router.navigateByUrl('/dashboard');
+    this.authService.login(this.email()).subscribe({
+      next: () => {
+        this.error.set('');
+        this.router.navigateByUrl('/dashboard');
+      },
+      error: () => {
+        this.error.set('Compte inconnu pour la demo.');
+      },
+    });
   }
 }

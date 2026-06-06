@@ -1,5 +1,8 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, delay, map, of } from 'rxjs';
+﻿import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { API_BASE_URL } from '../api.config';
 
 export interface Reservation {
   id: number;
@@ -35,96 +38,34 @@ export interface CreateReservationPayload {
   hourlyPrice: number;
 }
 
-const INITIAL_RESERVATIONS: Reservation[] = [
-  {
-    id: 101,
-    userId: 1,
-    roomId: 1,
-    roomName: 'Neon Arena',
-    customerName: 'Camille Martin',
-    startDate: '2026-06-04',
-    startTime: '18:00',
-    duration: 2,
-    playerCount: 6,
-    totalPrice: 76,
-    status: 'confirmed',
-    paymentStatus: 'paid',
-  },
-  {
-    id: 102,
-    userId: 1,
-    roomId: 2,
-    roomName: 'Pixel Lounge',
-    customerName: 'Camille Martin',
-    startDate: '2026-06-07',
-    startTime: '20:00',
-    duration: 3,
-    playerCount: 4,
-    totalPrice: 75,
-    status: 'pending',
-    paymentStatus: 'pending',
-  },
-  {
-    id: 103,
-    userId: 2,
-    roomId: 3,
-    roomName: 'Strategy Box',
-    customerName: 'Noa Bernard',
-    startDate: '2026-06-09',
-    startTime: '14:00',
-    duration: 4,
-    playerCount: 8,
-    totalPrice: 176,
-    status: 'confirmed',
-    paymentStatus: 'paid',
-    comment: {
-      rating: 9,
-      content: 'Tres bonne salle pour une session equipe.',
-      date: '2026-06-10',
-    },
-  },
-];
-
 @Injectable({ providedIn: 'root' })
 export class ReservationsService {
-  private readonly reservationsSubject = new BehaviorSubject<Reservation[]>(INITIAL_RESERVATIONS);
+  private readonly http = inject(HttpClient);
 
   getReservations(): Observable<Reservation[]> {
-    return this.reservationsSubject.asObservable().pipe(delay(120));
+    return this.http.get<Reservation[]>(`${API_BASE_URL}/reservations`);
   }
 
   getReservationsByUser(userId: number): Observable<Reservation[]> {
-    return this.getReservations().pipe(
-      map((reservations) => reservations.filter((reservation) => reservation.userId === userId)),
-    );
+    return this.http.get<Reservation[]>(`${API_BASE_URL}/reservations/user/${userId}`);
   }
 
   createReservation(payload: CreateReservationPayload): Observable<Reservation> {
-    const reservation: Reservation = {
-      id: Date.now(),
+    return this.http.post<Reservation>(`${API_BASE_URL}/reservations`, {
       userId: payload.userId,
       roomId: payload.roomId,
-      roomName: payload.roomName,
       customerName: payload.customerName,
       startDate: payload.startDate,
       startTime: payload.startTime,
       duration: payload.duration,
       playerCount: payload.playerCount,
-      totalPrice: payload.duration * payload.hourlyPrice,
-      status: 'pending',
-      paymentStatus: 'pending',
-    };
-
-    this.reservationsSubject.next([reservation, ...this.reservationsSubject.value]);
-
-    return of(reservation).pipe(delay(150));
+    });
   }
 
-  addComment(reservationId: number, comment: ReservationComment): void {
-    this.reservationsSubject.next(
-      this.reservationsSubject.value.map((reservation) =>
-        reservation.id === reservationId ? { ...reservation, comment } : reservation,
-      ),
-    );
+  addComment(reservationId: number, comment: ReservationComment): Observable<Reservation> {
+    return this.http.patch<Reservation>(`${API_BASE_URL}/reservations/${reservationId}/comment`, {
+      rating: comment.rating,
+      content: comment.content,
+    });
   }
 }
