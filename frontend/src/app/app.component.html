@@ -1,4 +1,4 @@
-<div class="min-h-screen text-slate-100">
+<div class="min-h-screen flex flex-col text-slate-100">
   <header class="sticky top-0 z-10 border-b border-white/10 bg-slate-950/80 backdrop-blur">
     <nav class="mx-auto flex min-h-20 w-full max-w-6xl flex-col gap-4 px-6 py-4 md:flex-row md:items-center md:justify-between">
       <a class="text-xl font-semibold text-white" routerLink="/dashboard">Gaming Rooms</a>
@@ -52,7 +52,9 @@
     </nav>
   </header>
 
-  <router-outlet />
+  <main class="flex-grow">
+    <router-outlet />
+  </main>
 
   <footer class="mt-12 border-t border-white/10 bg-slate-950/90">
     <div class="mx-auto w-full max-w-6xl px-6 py-10">
@@ -60,7 +62,7 @@
         <section>
           <h2 class="text-xl font-bold text-sky-300">GamingRooms</h2>
           <p class="mt-4 text-sm leading-6 text-slate-400">
-            Decouvrez les meilleurs espaces gaming pour vos evenements, vos competitions et vos sessions entre amis.
+            Découvrez les meilleurs espaces gaming pour vos événements, vos compétitions et vos sessions entre amis.
           </p>
         </section>
 
