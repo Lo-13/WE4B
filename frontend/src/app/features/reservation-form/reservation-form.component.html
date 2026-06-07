@@ -1,0 +1,65 @@
+<section class="mx-auto w-full max-w-4xl px-6 py-8">
+  @if (room$ | async; as room) {
+    <a class="text-sm font-semibold text-cyan-200" [routerLink]="['/rooms', room.id]">Retour au detail</a>
+
+    <div class="glass-panel mt-5 grid gap-6 p-6 lg:grid-cols-[1fr_20rem]">
+      <form class="space-y-5" (ngSubmit)="submit(room.id, room.name, room.hourlyPrice, room.capacity)">
+        <div>
+          <p class="eyebrow">Reservation</p>
+          <h1 class="mt-2 text-3xl font-semibold text-white">{{ room.name }}</h1>
+          <p class="mt-2 text-sm text-slate-400">{{ room.city }} · {{ room.capacity }} joueurs max</p>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+          <label class="text-sm text-slate-300">
+            Date
+            <input class="field mt-2 w-full" type="date" name="startDate" [ngModel]="startDate()" (ngModelChange)="startDate.set($event)" required />
+          </label>
+          <label class="text-sm text-slate-300">
+            Heure de debut
+            <input class="field mt-2 w-full" type="time" name="startTime" [ngModel]="startTime()" (ngModelChange)="startTime.set($event)" required />
+          </label>
+          <label class="text-sm text-slate-300">
+            Duree
+            <input class="field mt-2 w-full" type="number" name="duration" min="1" max="8" [ngModel]="duration()" (ngModelChange)="duration.set(+$event)" required />
+          </label>
+          <label class="text-sm text-slate-300">
+            Nombre de joueurs
+            <input class="field mt-2 w-full" type="number" name="playerCount" min="1" [max]="room.capacity" [ngModel]="playerCount()" (ngModelChange)="playerCount.set(+$event)" required />
+          </label>
+        </div>
+
+        @if (error()) {
+          <p class="rounded-md bg-red-300/15 px-3 py-2 text-sm text-red-200">{{ error() }}</p>
+        }
+        @if (message()) {
+          <p class="rounded-md bg-emerald-300/15 px-3 py-2 text-sm text-emerald-200">{{ message() }}</p>
+        }
+
+        <button class="btn-primary" type="submit" [disabled]="isSubmitting()">
+          {{ isSubmitting() ? 'Envoi...' : 'Confirmer la reservation' }}
+        </button>
+      </form>
+
+      <aside class="rounded-lg border border-white/10 bg-slate-950/70 p-5">
+        <h2 class="font-semibold text-white">Recapitulatif</h2>
+        <dl class="mt-5 space-y-4 text-sm">
+          <div>
+            <dt class="text-slate-400">Salle</dt>
+            <dd class="font-semibold text-white">{{ room.name }}</dd>
+          </div>
+          <div>
+            <dt class="text-slate-400">Tarif</dt>
+            <dd class="font-semibold text-cyan-200">{{ room.hourlyPrice | currency: 'EUR' : 'symbol' : '1.0-0' }}/h</dd>
+          </div>
+          <div>
+            <dt class="text-slate-400">Total estime</dt>
+            <dd class="text-2xl font-semibold text-cyan-200">{{ duration() * room.hourlyPrice | currency: 'EUR' : 'symbol' : '1.0-0' }}</dd>
+          </div>
+        </dl>
+      </aside>
+    </div>
+  } @else {
+    <p class="panel-light p-6 text-slate-300">Salle introuvable.</p>
+  }
+</section>

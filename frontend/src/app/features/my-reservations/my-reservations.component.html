@@ -1,0 +1,95 @@
+<section class="mx-auto w-full max-w-4xl space-y-10 px-6 py-8">
+  <div>
+    <p class="eyebrow">Espace client</p>
+    <h1 class="mt-2 text-3xl font-semibold text-white">Mes reservations</h1>
+  </div>
+
+  @if (reservations$() | async; as reservations) {
+    <section>
+      <h2 class="mb-4 text-xl font-semibold text-white">A venir</h2>
+      <div class="space-y-4">
+        @for (reservation of reservations; track reservation.id) {
+          @if (!isHistoric(reservation)) {
+            <article class="panel-light border-l-4 border-amber-300 p-5">
+              <div class="flex flex-col justify-between gap-4 sm:flex-row">
+                <div>
+                  <h3 class="text-lg font-semibold text-white">{{ reservation.roomName }}</h3>
+                  <p class="mt-1 text-sm text-slate-400">
+                    {{ reservation.startDate | date: 'dd/MM/yyyy' }} · {{ reservation.startTime }} · {{ reservation.duration }} h
+                  </p>
+                  <p class="mt-1 text-sm text-slate-400">{{ reservation.playerCount }} joueurs · {{ reservation.totalPrice | currency: 'EUR' : 'symbol' : '1.0-0' }}</p>
+                </div>
+                <span class="h-fit rounded-full bg-amber-300/15 px-3 py-1 text-xs font-semibold text-amber-200">En attente</span>
+              </div>
+            </article>
+          }
+        } @empty {
+          <p class="text-slate-400">Aucune reservation.</p>
+        }
+      </div>
+    </section>
+
+    <section>
+      <h2 class="mb-4 text-xl font-semibold text-white">Historique</h2>
+      <div class="space-y-4">
+        @for (reservation of reservations; track reservation.id) {
+          @if (isHistoric(reservation)) {
+            <article
+              class="panel-light border-l-4 p-5"
+              [ngClass]="{
+                'border-emerald-300': reservation.status === 'confirmed',
+                'border-red-300': reservation.status === 'cancelled'
+              }"
+            >
+              <div class="flex flex-col justify-between gap-4 sm:flex-row">
+                <div>
+                  <h3 class="text-lg font-semibold text-white">{{ reservation.roomName }}</h3>
+                  <p class="mt-1 text-sm text-slate-400">
+                    {{ reservation.startDate | date: 'dd/MM/yyyy' }} · {{ reservation.startTime }} · {{ reservation.duration }} h
+                  </p>
+                  <p class="mt-1 text-sm text-slate-400">{{ reservation.playerCount }} joueurs · paiement {{ reservation.paymentStatus }}</p>
+                </div>
+                <span
+                  class="h-fit rounded-full px-3 py-1 text-xs font-semibold"
+                  [ngClass]="{
+                    'bg-emerald-300/15 text-emerald-200': reservation.status === 'confirmed',
+                    'bg-red-300/15 text-red-200': reservation.status === 'cancelled'
+                  }"
+                >
+                  {{ reservation.status }}
+                </span>
+              </div>
+
+              @if (reservation.comment) {
+                <div class="mt-4 rounded-md border border-white/10 bg-white/5 p-4 text-sm text-slate-300">
+                  <p class="font-semibold text-cyan-200">Avis : {{ reservation.comment.rating }}/10</p>
+                  <p class="mt-1">{{ reservation.comment.content }}</p>
+                </div>
+              } @else if (reservation.status === 'confirmed') {
+                <form class="mt-4 space-y-3 border-t border-white/10 pt-4" (ngSubmit)="addComment(reservation.id)">
+                  <label class="block text-sm text-slate-300">
+                    Note
+                    <select class="field mt-2 w-28" name="rating" [ngModel]="rating()" (ngModelChange)="rating.set(+$event)">
+                      @for (value of [1,2,3,4,5,6,7,8,9,10]; track value) {
+                        <option [value]="value">{{ value }}</option>
+                      }
+                    </select>
+                  </label>
+                  <textarea
+                    class="field w-full"
+                    name="commentText"
+                    rows="3"
+                    placeholder="Partage ton experience..."
+                    [ngModel]="commentText()"
+                    (ngModelChange)="commentText.set($event)"
+                  ></textarea>
+                  <button class="btn-primary" type="submit">Publier</button>
+                </form>
+              }
+            </article>
+          }
+        }
+      </div>
+    </section>
+  }
+</section>

@@ -1,0 +1,17 @@
+<section class="mx-auto w-full max-w-3xl px-6 py-8">
+  <div class="glass-panel p-6">
+    <p class="eyebrow">Profil</p>
+    <h1 class="mt-2 text-3xl font-semibold text-white">{{ user()?.name }}</h1>
+
+    <dl class="mt-6 grid gap-4 text-sm sm:grid-cols-2">
+      <div class="rounded-md border border-white/10 bg-slate-950/70 p-4">
+        <dt class="text-slate-400">Email</dt>
+        <dd class="mt-1 font-semibold text-white">{{ user()?.email }}</dd>
+      </div>
+      <div class="rounded-md border border-white/10 bg-slate-950/70 p-4">
+        <dt class="text-slate-400">Role</dt>
+        <dd class="mt-1 font-semibold text-white">{{ user()?.role }}</dd>
+      </div>
+    </dl>
+  </div>
+</section>
