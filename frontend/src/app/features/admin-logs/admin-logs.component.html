@@ -1,0 +1,91 @@
+<section class="app-page">
+    <div class="glass-panel p-8">
+        <p class="eyebrow">Administration</p>
+        <h1 class="mt-2 text-3xl font-semibold">Gestion MongoDB</h1>
+
+        <!-- Affichage des onglets -->
+        <div class="mt-6 flex gap-2 border-b border-white/10 pb-0">
+            <button
+                    class="px-4 py-2 text-sm font-medium transition-colors"
+                    [class.text-white]="activeTab() === 'logs'"
+                    [class.border-b-2]="activeTab() === 'logs'"
+                    [class.border-purple-400]="activeTab() === 'logs'"
+                    [class.text-slate-400]="activeTab() !== 'logs'"
+                    (click)="setTab('logs')">
+                Logs d'activité ({{ logs().length }})
+            </button>
+            <button
+                    class="px-4 py-2 text-sm font-medium transition-colors"
+                    [class.text-white]="activeTab() === 'stats'"
+                    [class.border-b-2]="activeTab() === 'stats'"
+                    [class.border-purple-400]="activeTab() === 'stats'"
+                    [class.text-slate-400]="activeTab() !== 'stats'"
+                    (click)="setTab('stats')">
+                Statistiques d'usage
+            </button>
+
+        </div>
+
+        <!-- Concerne les logs -->
+        @if (activeTab() === 'logs') {
+            <div class="mt-6">
+                @if (logs().length === 0) {
+                    <p class="text-slate-400">Aucun log enregistré pour le moment.</p>
+                }
+                <div class="space-y-3">
+                    @for (log of logs(); track log._id) {
+                        <div class="rounded-lg border border-white/10 bg-white/5 p-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div>
+                  <span class="inline-block rounded bg-purple-500/20 px-2 py-0.5 text-xs font-medium text-purple-300">
+                    {{ log.action }}
+                  </span>
+                                    <span class="ml-2 text-xs text-slate-400">{{ log.targetType }}</span>
+                                </div>
+                                <span class="text-xs text-slate-500 whitespace-nowrap">{{ formatDate(log.createdAt) }}</span>
+                            </div>
+                            @if (log.email) {
+                                <p class="mt-1 text-sm text-slate-300">{{ log.email }}</p>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        <!--- Concerne les statistiques -->
+        @if (activeTab() === 'stats') {
+            <div class="mt-6">
+                <div class="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
+                    <div class="rounded-lg border border-white/10 bg-white/5 p-4 text-center">
+                        <p class="text-2xl font-semibold text-white">{{ totalConsultations() }}</p>
+                        <p class="mt-1 text-xs text-slate-400">Consultations de salles</p>
+                    </div>
+                    <div class="rounded-lg border border-white/10 bg-white/5 p-4 text-center">
+                        <p class="text-2xl font-semibold text-white">{{ totalReservations() }}</p>
+                        <p class="mt-1 text-xs text-slate-400">Réservations tracées</p>
+                    </div>
+                    <div class="rounded-lg border border-white/10 bg-white/5 p-4 text-center">
+                        <p class="text-2xl font-semibold text-white">{{ stats().length }}</p>
+                        <p class="mt-1 text-xs text-slate-400">Entrées au total</p>
+                    </div>
+                </div>
+                @if (stats().length === 0) {
+                    <p class="text-slate-400">Aucune donnée</p>
+                }
+                <div class="space-y-2">
+                    @for (stat of stats(); track stat._id) {
+                        <div class="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 px-4 py-3">
+                            <div>
+                                <span class="text-sm font-medium text-white">{{ stat.roomName ?? stat.type }}</span>
+                                <span class="ml-2 text-xs text-slate-400">{{ stat.date }}</span>
+                            </div>
+                            <span class="text-lg font-semibold text-purple-300">{{ stat.count }}</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+    </div>
+</section>

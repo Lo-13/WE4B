@@ -21,11 +21,14 @@
           Se connecter
         </a>
       }
-      @if (canManageReservations()) {
-        <a class="btn-secondary" routerLink="/reservations">
-          Gerer les reservations
-        </a>
-      }
+        @if (canManageReservations()) {
+            <a class="btn-secondary" routerLink="/reservations">
+                Gestion des reservations
+            </a>
+            <a class="btn-secondary" routerLink="/admin-logs">
+                Gestion des logs
+            </a>
+        }
     </div>
   </div>
 </section>
