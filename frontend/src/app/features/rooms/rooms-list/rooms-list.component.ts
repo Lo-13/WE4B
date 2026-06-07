@@ -4,7 +4,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, combineLatest, map } from 'rxjs';
-
+import {LeafletMap} from '../leaflet-map/leaflet-map';
 import { GamingRoom, RoomsService } from '../../../core/services/rooms.service';
 import { RoomCardComponent } from '../room-card/room-card.component';
 
@@ -13,7 +13,7 @@ type SortMode = 'name' | 'price-asc' | 'price-desc' | 'capacity-desc';
 @Component({
   selector: 'app-rooms-list',
   standalone: true,
-  imports: [AsyncPipe, FormsModule, RoomCardComponent],
+  imports: [AsyncPipe, FormsModule, RoomCardComponent, LeafletMap],
   templateUrl: './rooms-list.component.html',
 })
 export class RoomsListComponent {

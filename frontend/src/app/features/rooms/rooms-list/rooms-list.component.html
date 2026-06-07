@@ -46,3 +46,16 @@
     </div>
   }
 </section>
+
+<section class="app-page space-y-6">
+  <div>
+    <h1 class="mt-2 text-3xl font-semibold text-white">Où sommes-nous ?</h1>
+    <p class="mt-2 text-slate-300">Découvrez nos salles sur la carte.</p>
+  </div>
+
+  <div class = "py-6">
+    <!--- The map component will use the same visibleRooms$ observable to display the rooms on the map, ensuring consistency between the list and the map. 
+    async means that the component will wait for the observable to emit a value before displaying the map. -->
+    <app-leaflet-map [rooms]="(visibleRooms$ | async) ?? []" />
+  </div>
+</section>

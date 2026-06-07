@@ -64,6 +64,8 @@ export class RoomsService {
       status: this.mapStatus(room.status),
       imageUrl: this.getImageUrl(room.id),
       description: room.description,
+      latitude : room.latitude,
+      longitude : room.longitude,
     };
   }
 

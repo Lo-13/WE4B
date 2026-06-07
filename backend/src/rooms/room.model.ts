@@ -12,4 +12,6 @@ export interface GamingRoom {
   status: RoomStatus;
   imageUrl: string;
   description: string;
+  latitude: number;
+  longitude: number;
 }

@@ -17,6 +17,8 @@ export interface GamingRoom {
   status: 'available' | 'maintenance' | 'reserved';
   imageUrl: string;
   description: string;
+  latitude: number;
+  longitude: number;
 }
 
 @Injectable({ providedIn: 'root' })
