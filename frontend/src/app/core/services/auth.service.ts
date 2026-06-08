@@ -11,6 +11,7 @@ export interface CurrentUser {
   name: string;
   email: string;
   role: UserRole;
+  memberSince: string;
 }
 
 interface LoginResponse {
