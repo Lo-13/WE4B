@@ -34,8 +34,8 @@ export class AuthService {
   readonly currentUser = this.currentUserSignal.asReadonly();
   readonly isAuthenticated = computed(() => this.currentUserSignal() !== null);
 
-  login(email: string): Observable<boolean> {
-    return this.http.post<LoginResponse>(`${API_BASE_URL}/auth/login`, { email }).pipe(
+  login(email: string, password?: string): Observable<boolean> {
+    return this.http.post<LoginResponse>(`${API_BASE_URL}/auth/login`, { email, password }).pipe(
       tap((response) => {
         this.storeCurrentUser(response.user);
       }),

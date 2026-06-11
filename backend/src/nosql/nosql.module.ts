@@ -1,5 +1,5 @@
+﻿import 'dotenv/config';
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { NosqlController } from './nosql.controller';
 import { NosqlService } from './nosql.service';
@@ -7,21 +7,23 @@ import { ActivityLog, ActivityLogSchema } from './schemas/activity-log.schema';
 import { FileMetadata, FileMetadataSchema } from './schemas/file-metadata.schema';
 import { UsageStat, UsageStatSchema } from './schemas/usage-stat.schema';
 
-@Module({
-  imports: [
-    MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGO_URI', 'mongodb://127.0.0.1:27017/gaming_rooms_nosql'),
+const mongoUri = process.env.MONGO_URI?.trim();
+const mongoImports = mongoUri
+  ? [
+      MongooseModule.forRoot(mongoUri, {
+        serverSelectionTimeoutMS: 1000,
+        bufferCommands: false,
       }),
-    }),
-    MongooseModule.forFeature([
-      { name: ActivityLog.name, schema: ActivityLogSchema },
-      { name: FileMetadata.name, schema: FileMetadataSchema },
-      { name: UsageStat.name, schema: UsageStatSchema },
-    ]),
-  ],
+      MongooseModule.forFeature([
+        { name: ActivityLog.name, schema: ActivityLogSchema },
+        { name: FileMetadata.name, schema: FileMetadataSchema },
+        { name: UsageStat.name, schema: UsageStatSchema },
+      ]),
+    ]
+  : [];
+
+@Module({
+  imports: mongoImports,
   controllers: [NosqlController],
   providers: [NosqlService],
   exports: [NosqlService],
