@@ -10,6 +10,7 @@ import { ReservationFormComponent } from './features/reservation-form/reservatio
 import { ReservationsComponent } from './features/reservations/reservations.component';
 import { RoomDetailComponent } from './features/rooms/room-detail/room-detail.component';
 import { RoomsListComponent } from './features/rooms/rooms-list/rooms-list.component';
+import { AdminLogsComponent } from './features/admin-logs/admin-logs.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
@@ -42,6 +43,12 @@ export const routes: Routes = [
     canActivate: [roleGuard],
     data: { roles: ['admin', 'super-admin'] },
   },
+    {
+        path: 'admin-logs',
+        component: AdminLogsComponent,
+        canActivate: [roleGuard],
+        data: { roles: ['admin', 'super-admin'] },
+    },
   {
     path: 'profile',
     component: ProfileComponent,
