@@ -9,17 +9,14 @@
       }
     </h1>
     <p class="mt-4 max-w-2xl leading-7 text-slate-300">
-      Consultez les salles disponibles, reservez un creneau et suivez vos demandes depuis votre espace.
+      Consultez les salles disponibles, reservez un creneau et suivez vos
+      demandes depuis votre espace.
     </p>
 
     <div class="mt-8 flex flex-wrap gap-3">
-      <a class="btn-primary" routerLink="/rooms">
-        Explorer les salles
-      </a>
+      <a class="btn-primary" routerLink="/rooms"> Explorer les salles </a>
       @if (!user()) {
-        <a class="btn-secondary" routerLink="/login">
-          Se connecter
-        </a>
+        <a class="btn-secondary" routerLink="/login"> Se connecter </a>
       }
         @if (canManageReservations()) {
             <a class="btn-secondary" routerLink="/reservations">

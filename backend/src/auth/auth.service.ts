@@ -122,6 +122,7 @@ export class AuthService {
       name: `${user.name} ${user.lastName}`.trim(),
       email: user.email,
       role: this.mapRole(user.role),
+      memberSince: user.registrationDate.toISOString().substring(0, 10),
     };
   }
 
