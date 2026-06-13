@@ -7,6 +7,7 @@ import { DatabaseModule } from './database/database.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { NosqlModule } from './nosql/nosql.module';
+import { AdminRequestModule } from './admin-request/admin-request.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { NosqlModule } from './nosql/nosql.module';
     RoomsModule,
     ReservationsModule,
     NosqlModule,
+    AdminRequestModule,
   ],
   controllers: [AppController],
   providers: [AppService],

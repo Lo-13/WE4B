@@ -14,38 +14,39 @@
       </div>
       <div class="rounded-md border border-white/10 bg-slate-950/70 p-4">
         <dt class="text-slate-400">Membre depuis</dt>
-        <dd class="mt-1 font-semibold text-white">{{ user()?.memberSince}}</dd>
+        <dd class="mt-1 font-semibold text-white">{{ user()?.memberSince }}</dd>
       </div>
     </dl>
 
     <hr class="my-12 h-0.5 border-t-0 bg-white/10" />
     <dl class="mt-6 grid gap-4 text-sm sm:grid-cols-1">
       <div class="rounded-md border border-white/10 bg-slate-950/70 p-4">
-        <h3 class="text-lg font-semibold text-white mb-2">Demander à être administrateur</h3>
-            <p class="text-gray-400 text-sm mb-4">
-                            Vous pouvez envoyer une demande pour obtenir le rôle administrateur. </p>
-              <form method="POST" action="/account" class="flex flex-col gap-3">
-                            <input type="hidden" name="request_admin" value="1">
-                            <select
-                                    name="room_id"
-                                    required
-                                    class="w-full sm:w-auto bg-gray-800 border border-gray-700 text-gray-200 text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:border-light-blue-600"
-                                >
-                                @for (room of (rooms | async) ?? []; track room.id) {
-                                    <option value="{{ room.id }}">{{ room.name }}</option>
-                                } 
-                            </select>
-                            <button
-                                type="submit"
-                                class="inline-block bg-sky-300 hover:bg-sky-200 text-black px-4 py-2 rounded-lg text-sm transition"
-                            >
-                                Demander à être administrateur d'une salle
-                            </button>
-
-                        </form>
+        <h3 class="text-lg font-semibold text-white mb-2">
+          Demander à être administrateur
+        </h3>
+        <p class="text-gray-400 text-sm mb-4">
+          Vous pouvez envoyer une demande pour obtenir le rôle administrateur.
+        </p>
+        <form (ngSubmit)="requestAdmin()" class="flex flex-col gap-3">
+          <input type="hidden" name="request_admin" value="1" />
+          <select
+            name="room_id"
+            [(ngModel)]="selectedRoomId"
+            required
+            class="w-full sm:w-auto bg-gray-800 border border-gray-700 text-gray-200 text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:border-light-blue-600"
+          >
+            @for (room of (rooms | async) ?? []; track room.id) {
+              <option [ngValue]="room.id">{{ room.name }}</option>
+            }
+          </select>
+          <button
+            type="submit"
+            class="inline-block bg-sky-300 hover:bg-sky-200 text-black px-4 py-2 rounded-lg text-sm transition"
+          >
+            Demander à être administrateur d'une salle
+          </button>
+        </form>
       </div>
-
     </dl>
-
   </div>
 </section>
