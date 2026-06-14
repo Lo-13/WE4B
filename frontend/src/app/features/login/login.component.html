@@ -69,19 +69,20 @@
       required
     />
 
+    <label class="mt-4 block text-sm font-medium text-slate-200" for="password">
+      Mot de passe
+      <input
+        id="password"
+        name="password"
+        type="password"
+        class="field mt-2 w-full"
+        [ngModel]="password()"
+        (ngModelChange)="password.set($event)"
+      />
+    </label>
+
     @if (mode() === 'register') {
-      <div class="mt-4 grid gap-4 sm:grid-cols-[1fr_7rem]">
-        <label class="block text-sm font-medium text-slate-200" for="password">
-          Mot de passe
-          <input
-            id="password"
-            name="password"
-            type="password"
-            class="field mt-2 w-full"
-            [ngModel]="password()"
-            (ngModelChange)="password.set($event)"
-          />
-        </label>
+      <div class="mt-4 grid gap-4">
         <label class="block text-sm font-medium text-slate-200" for="age">
           Age
           <input

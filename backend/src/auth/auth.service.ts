@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../database/entities/user.entity';
@@ -16,8 +17,8 @@ export class AuthService {
   ) {}
 
   async login(loginDto: LoginDto): Promise<{ user: CurrentUser }> {
-    if (!loginDto.email) {
-      throw new BadRequestException('Email is required');
+    if (!loginDto.email || !loginDto.password) {
+      throw new BadRequestException('Email and password are required');
     }
 
     const user = await this.usersRepository.findOne({
@@ -25,6 +26,13 @@ export class AuthService {
     });
 
     if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const normalizedHash = this.normalizeBcryptHash(user.password);
+    const isPasswordValid = await bcrypt.compare(loginDto.password, normalizedHash);
+
+    if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
@@ -57,6 +65,9 @@ export class AuthService {
       throw new BadRequestException('Email already exists');
     }
 
+    const saltOrRounds = 10;
+    const hashedPassword = await bcrypt.hash(registerDto.password?.trim() || 'temporary-password', saltOrRounds);
+
     const savedUser = await this.usersRepository.save(
       this.usersRepository.create({
         id: await this.getNextUserId(),
@@ -64,7 +75,7 @@ export class AuthService {
         name,
         lastName,
         age: Number(registerDto.age ?? 18),
-        password: registerDto.password?.trim() || 'temporary-password',
+        password: hashedPassword,
         role: 'user',
         registrationDate: new Date(),
       }),
@@ -159,5 +170,12 @@ export class AuthService {
     }
 
     return 'client';
+  }
+
+  private normalizeBcryptHash(hash: string): string {
+    if (hash && hash.startsWith('$2y$')) {
+      return `$2b$${hash.slice(4)}`;
+    }
+    return hash;
   }
 }
