@@ -19,9 +19,11 @@
         (ngModelChange)="city.set($event)"
       >
         <option value="all">Toutes les villes</option>
-        <option value="Belfort">Belfort</option>
-        <option value="Montbeliard">Montbeliard</option>
-        <option value="Sevenans">Sevenans</option>
+        @if (cityOptions$ | async; as cities) {
+          @for (cityOption of cities; track cityOption) {
+            <option [value]="cityOption">{{ cityOption }}</option>
+          }
+        }
       </select>
       <select
         class="field"
@@ -53,9 +55,7 @@
     <p class="mt-2 text-slate-300">Découvrez nos salles sur la carte.</p>
   </div>
 
-  <div class = "py-6">
-    <!--- The map component will use the same visibleRooms$ observable to display the rooms on the map, ensuring consistency between the list and the map. 
-    async means that the component will wait for the observable to emit a value before displaying the map. -->
+  <div class="py-6">
     <app-leaflet-map [rooms]="(visibleRooms$ | async) ?? []" />
   </div>
 </section>

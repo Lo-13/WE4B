@@ -69,4 +69,14 @@ export class ReservationsService {
       content: comment.content,
     });
   }
+
+  updateReservationStatus(reservationId: number, status: Reservation['status']): Observable<Pick<Reservation, 'id' | 'status'>> {
+    return this.http.patch<Pick<Reservation, 'id' | 'status'>>(`${API_BASE_URL}/reservations/${reservationId}/status`, {
+      status,
+    });
+  }
+
+  cancelReservation(reservationId: number): Observable<Pick<Reservation, 'id' | 'status'>> {
+    return this.http.patch<Pick<Reservation, 'id' | 'status'>>(`${API_BASE_URL}/reservations/${reservationId}/cancel`, {});
+  }
 }

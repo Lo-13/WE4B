@@ -108,9 +108,7 @@ export class ReservationsService {
         roomName: room.name,
         metadata: { playerCount, duration },
       });
-    } catch {
-      // La reservation ne doit pas echouer si la partie audit/statistiques est indisponible.
-    }
+    } catch {}
   }
 
   async addComment(id: number, addCommentDto: AddCommentDto): Promise<Reservation> {

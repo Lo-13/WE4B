@@ -1,5 +1,5 @@
 import { AsyncPipe, CurrencyPipe } from "@angular/common";
-import { Component, computed, inject, signal } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { map, switchMap } from "rxjs";
@@ -34,8 +34,6 @@ export class ReservationFormComponent {
     map((params) => Number(params.get("id"))),
     switchMap((id) => this.roomsService.getRoomById(id)),
   );
-
-  readonly totalPreview = computed(() => this.duration());
 
   submit(
     roomId: number,

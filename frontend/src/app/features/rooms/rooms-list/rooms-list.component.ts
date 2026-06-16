@@ -3,8 +3,8 @@ import { Component, inject, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, combineLatest, map } from 'rxjs';
-import {LeafletMap} from '../leaflet-map/leaflet-map';
+import { Observable, combineLatest, map, shareReplay } from 'rxjs';
+import { LeafletMap } from '../leaflet-map/leaflet-map';
 import { GamingRoom, RoomsService } from '../../../core/services/rooms.service';
 import { RoomCardComponent } from '../room-card/room-card.component';
 
@@ -24,7 +24,11 @@ export class RoomsListComponent {
   readonly city = signal('all');
   readonly sortMode = signal<SortMode>('name');
 
-  private readonly rooms$ = this.roomsService.getRooms();
+  private readonly rooms$ = this.roomsService.getRooms().pipe(shareReplay(1));
+
+  readonly cityOptions$: Observable<string[]> = this.rooms$.pipe(
+    map((rooms) => [...new Set(rooms.map((room) => room.city))].sort((a, b) => a.localeCompare(b))),
+  );
 
   readonly visibleRooms$: Observable<GamingRoom[]> = combineLatest([
     this.rooms$,

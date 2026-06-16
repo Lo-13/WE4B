@@ -8,7 +8,6 @@ import { ReservationEntity } from './entities/reservation.entity';
 import { RoomEntity } from './entities/room.entity';
 import { TypeMaterialEntity } from './entities/type-material.entity';
 import { UserEntity } from './entities/user.entity';
-import { AdminRequestEntity } from '../admin-request/admin-request.entity';
 
 @Module({
   imports: [
@@ -29,8 +28,7 @@ import { AdminRequestEntity } from '../admin-request/admin-request.entity';
           ReservationEntity,
           RoomEntity,
           TypeMaterialEntity,
-          UserEntity,
-          AdminRequestEntity
+          UserEntity
         ],
         synchronize: false,
         charset: 'utf8mb4',

@@ -88,9 +88,8 @@ export class RoomsService {
   }
 
   private getImageUrl(id: number): string {
-    const imageIds = ['photo-1550745165-9bc0b252726f', 'photo-1511512578047-dfb367046420', 'photo-1542751371-adc38448a05e'];
-
-    return `https://images.unsplash.com/${imageIds[(id - 1) % imageIds.length]}?auto=format&fit=crop&w=1200&q=80`;
+    const imageIndex = ((id - 1) % 3) + 1;
+    return `/assets/rooms/room-${imageIndex}.jpg`;
   }
 
   private toSortedNames<T extends { name?: string; title?: string }>(items: T[] | undefined, field: 'name' | 'title' = 'name'): string[] {

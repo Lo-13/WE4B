@@ -1,9 +1,8 @@
 <section class="app-page">
     <div class="glass-panel p-8">
         <p class="eyebrow">Administration</p>
-        <h1 class="mt-2 text-3xl font-semibold">Gestion MongoDB</h1>
+        <h1 class="mt-2 text-3xl font-semibold">Activité du site</h1>
 
-        <!-- Affichage des onglets -->
         <div class="mt-6 flex gap-2 border-b border-white/10 pb-0">
             <button
                     class="px-4 py-2 text-sm font-medium transition-colors"
@@ -12,7 +11,7 @@
                     [class.border-purple-400]="activeTab() === 'logs'"
                     [class.text-slate-400]="activeTab() !== 'logs'"
                     (click)="setTab('logs')">
-                Logs d'activité ({{ logs().length }})
+                Activité ({{ logs().length }})
             </button>
             <button
                     class="px-4 py-2 text-sm font-medium transition-colors"
@@ -23,10 +22,17 @@
                     (click)="setTab('stats')">
                 Statistiques d'usage
             </button>
-
+            <button
+                    class="px-4 py-2 text-sm font-medium transition-colors"
+                    [class.text-white]="activeTab() === 'files'"
+                    [class.border-b-2]="activeTab() === 'files'"
+                    [class.border-purple-400]="activeTab() === 'files'"
+                    [class.text-slate-400]="activeTab() !== 'files'"
+                    (click)="setTab('files')">
+                Fichiers ({{ files().length }})
+            </button>
         </div>
 
-        <!-- Concerne les logs -->
         @if (activeTab() === 'logs') {
             <div class="mt-6">
                 @if (logs().length === 0) {
@@ -53,7 +59,6 @@
             </div>
         }
 
-        <!--- Concerne les statistiques -->
         @if (activeTab() === 'stats') {
             <div class="mt-6">
                 <div class="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
@@ -63,7 +68,7 @@
                     </div>
                     <div class="rounded-lg border border-white/10 bg-white/5 p-4 text-center">
                         <p class="text-2xl font-semibold text-white">{{ totalReservations() }}</p>
-                        <p class="mt-1 text-xs text-slate-400">Réservations tracées</p>
+                        <p class="mt-1 text-xs text-slate-400">Réservations enregistrées</p>
                     </div>
                     <div class="rounded-lg border border-white/10 bg-white/5 p-4 text-center">
                         <p class="text-2xl font-semibold text-white">{{ stats().length }}</p>
@@ -87,5 +92,28 @@
             </div>
         }
 
+        @if (activeTab() === 'files') {
+            <div class="mt-6">
+                @if (loading()) {
+                    <p class="text-slate-400">Chargement des fichiers...</p>
+                } @else if (files().length === 0) {
+                    <p class="text-slate-400">Aucun fichier enregistré pour le moment.</p>
+                }
+
+                <div class="space-y-2">
+                    @for (file of files(); track file._id) {
+                        <div class="flex items-center justify-between gap-4 rounded-lg border border-white/10 bg-white/5 px-4 py-3">
+                            <div>
+                                <p class="text-sm font-medium text-white">{{ file.fileName }}</p>
+                                <p class="mt-1 text-xs text-slate-400">
+                                    {{ file.mimeType }} · {{ formatDate(file.createdAt) }}
+                                </p>
+                            </div>
+                            <span class="text-sm font-semibold text-purple-300">{{ formatSize(file.size) }}</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
     </div>
 </section>

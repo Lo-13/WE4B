@@ -48,7 +48,7 @@ export class AdminLogsComponent implements OnInit {
 
     totalReservations(): number {
         return this.stats()
-            .filter(s => s.type === 'reservation')
+            .filter(s => s.type === 'reservation_created')
             .reduce((acc, s) => acc + s.count, 0);
     }
 }

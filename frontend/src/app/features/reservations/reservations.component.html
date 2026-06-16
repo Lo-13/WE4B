@@ -2,9 +2,7 @@
   <div>
     <p class="eyebrow">Administration</p>
     <h1 class="mt-2 text-3xl font-semibold text-white">Réservations</h1>
-    <p class="mt-2 text-slate-300">
-      Route protegée par role admin ou super-admin.
-    </p>
+    <p class="mt-2 text-slate-300">Suivi des réservations de toutes les salles.</p>
   </div>
 
   <div class="glass-panel overflow-hidden">
@@ -16,6 +14,7 @@
           <th class="px-4 py-3 font-semibold">Date</th>
           <th class="px-4 py-3 font-semibold">Durée</th>
           <th class="px-4 py-3 font-semibold">Statut</th>
+          <th class="px-4 py-3 font-semibold">Actions</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-white/10">
@@ -49,6 +48,36 @@
                 >
                   {{ reservation.status }}
                 </span>
+              </td>
+              <td class="px-4 py-4">
+                <div class="flex flex-wrap gap-2">
+                  @if (reservation.status === 'pending') {
+                    <button
+                      type="button"
+                      class="rounded-md bg-emerald-300 px-3 py-1 text-xs font-semibold text-slate-950 transition hover:bg-emerald-200"
+                      (click)="confirmReservation(reservation.id)"
+                    >
+                      Confirmer
+                    </button>
+                    <button
+                      type="button"
+                      class="rounded-md bg-red-300 px-3 py-1 text-xs font-semibold text-slate-950 transition hover:bg-red-200"
+                      (click)="cancelReservation(reservation.id)"
+                    >
+                      Annuler
+                    </button>
+                  } @else if (reservation.status === 'confirmed') {
+                    <button
+                      type="button"
+                      class="rounded-md bg-red-300 px-3 py-1 text-xs font-semibold text-slate-950 transition hover:bg-red-200"
+                      (click)="cancelReservation(reservation.id)"
+                    >
+                      Annuler
+                    </button>
+                  } @else {
+                    <span class="text-xs text-slate-500">Aucune action</span>
+                  }
+                </div>
               </td>
             </tr>
           }

@@ -17,7 +17,7 @@ export class LoginComponent {
   private readonly router = inject(Router);
 
   readonly mode = signal<AuthMode>('login');
-  readonly email = signal('b@gamingrooms.fr');
+  readonly email = signal('');
   readonly password = signal('');
   readonly name = signal('');
   readonly lastName = signal('');

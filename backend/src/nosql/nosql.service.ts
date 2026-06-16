@@ -44,9 +44,7 @@ export class NosqlService {
         targetId: input.targetId,
         metadata: input.metadata ?? {},
       });
-    } catch {
-      // MongoDB is optional for local REST/MySQL testing.
-    }
+    } catch {}
   }
 
   async trackUsage(input: TrackUsageInput): Promise<void> {
@@ -75,9 +73,7 @@ export class NosqlService {
         },
         { upsert: true },
       );
-    } catch {
-      // MongoDB is optional for local REST/MySQL testing.
-    }
+    } catch {}
   }
 
   createFileMetadata(input: CreateFileMetadataDto) {
