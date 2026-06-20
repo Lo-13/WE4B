@@ -1,5 +1,5 @@
-import { renameSync } from 'node:fs';
-import { extname } from 'node:path';
+import { existsSync, renameSync } from 'node:fs';
+import { extname, join } from 'node:path';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -115,6 +115,7 @@ export class RoomsService {
 
   private async toGamingRoom(room: RoomEntity): Promise<GamingRoom> {
     const linkedImage = await this.nosqlService.findLatestFileForEntity('room', room.id);
+    const storedFileName = linkedImage?.metadata?.['storedFileName'];
     const publicUrl = linkedImage?.metadata?.['publicUrl'];
     const reviews = await this.findRoomReviews(room.id);
 
@@ -128,7 +129,9 @@ export class RoomsService {
       equipment: this.toSortedNames(room.materials),
       games: this.toSortedNames(room.games, 'title'),
       status: this.mapStatus(room.status),
-      imageUrl: typeof publicUrl === 'string' ? publicUrl : this.getImageUrl(room.id),
+      imageUrl: typeof publicUrl === 'string' && typeof storedFileName === 'string' && this.uploadedImageExists(storedFileName)
+        ? publicUrl
+        : this.getImageUrl(room.id),
       description: room.description,
       latitude: room.latitude,
       longitude: room.longitude,
@@ -165,6 +168,10 @@ export class RoomsService {
     const publicBackendUrl = process.env.PUBLIC_BACKEND_URL?.replace(/\/$/, '') ?? 'http://localhost:3001';
 
     return `${publicBackendUrl}/uploads/rooms/${filename}`;
+  }
+
+  private uploadedImageExists(filename: string): boolean {
+    return existsSync(join(process.cwd(), 'uploads', 'rooms', filename));
   }
 
   private normalizeUploadedImageName(image: UploadedRoomFile): string {
