@@ -78,6 +78,18 @@
                 @if (stats().length === 0) {
                     <p class="text-slate-400">Aucune donnée</p>
                 }
+
+                @if (stats().length > 0) {
+                    <div class="mb-6 grid gap-4 lg:grid-cols-2">
+                        <div class="h-72 rounded-lg border border-white/10 bg-slate-950/60 p-4">
+                            <canvas #viewsChart></canvas>
+                        </div>
+                        <div class="h-72 rounded-lg border border-white/10 bg-slate-950/60 p-4">
+                            <canvas #reservationsChart></canvas>
+                        </div>
+                    </div>
+                }
+
                 <div class="space-y-2">
                     @for (stat of stats(); track stat._id) {
                         <div class="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 px-4 py-3">
