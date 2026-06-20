@@ -18,4 +18,6 @@ export class DashboardComponent {
 
     return user?.role === "admin" || user?.role === "super-admin";
   });
+
+  readonly isSuperAdmin = computed(() => this.user()?.role === "super-admin");
 }

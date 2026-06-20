@@ -18,6 +18,7 @@
       </div>
     </dl>
 
+    @if (user()?.role !== 'admin' && user()?.role !== 'super-admin') {
     <hr class="my-12 h-0.5 border-t-0 bg-white/10" />
     <dl class="mt-6 grid gap-4 text-sm sm:grid-cols-1">
       <div class="rounded-md border border-white/10 bg-slate-950/70 p-4">
@@ -48,5 +49,6 @@
         </form>
       </div>
     </dl>
+    }
   </div>
 </section>

@@ -1,4 +1,4 @@
-﻿import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+﻿import { Controller, Delete, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 
 @Controller('rooms')
@@ -13,5 +13,10 @@ export class RoomsController {
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.roomsService.findOne(id);
+  }
+
+  @Delete(':id')
+  delete(@Param('id', ParseIntPipe) id: number) {
+    return this.roomsService.delete(id);
   }
 }

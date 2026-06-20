@@ -28,6 +28,15 @@
               Réservations
             </a>
           }
+          @if (isSuperAdmin()) {
+            <a
+              class="rounded-md px-3 py-2 text-slate-300 hover:bg-white/10 hover:text-white"
+              routerLink="/super-admin"
+              routerLinkActive="bg-white/10 text-white"
+            >
+              Super-admin
+            </a>
+          }
           <a
             class="rounded-md px-3 py-2 text-slate-300 hover:bg-white/10 hover:text-white"
             routerLink="/my-reservations"

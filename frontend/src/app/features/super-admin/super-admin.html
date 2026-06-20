@@ -1,0 +1,201 @@
+<section class="app-page space-y-8">
+  <!-- Header -->
+  <div>
+    <h1 class="text-3xl font-bold text-white">Espace Super-admin</h1>
+  </div>
+
+  <!-- Admin requests & Admin management -->
+  <div class="grid gap-6 lg:grid-cols-2">
+
+    <!-- Pending requests -->
+    <div class="glass-panel overflow-hidden">
+      <div class="px-5 py-4 border-b border-white/10">
+        <h2 class="font-semibold text-white">Demandes rôle admin</h2>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-white/5 text-slate-400 text-xs uppercase">
+            <tr>
+              <th class="px-4 py-3">Nom et prénom</th>
+              <th class="px-4 py-3">Salle</th>
+              <th class="px-4 py-3">Statut</th>
+              <th class="px-4 py-3">Décision</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/10">
+            @for (req of pendingRequests(); track req.requestId) {
+              <tr>
+                <td class="px-4 py-3 font-semibold text-white">{{ req.userName }}</td>
+                <td class="px-4 py-3 text-slate-300">{{ req.roomName }}</td>
+                <td class="px-4 py-3 text-slate-400">En traitement</td>
+                <td class="px-4 py-3">
+                  <div class="flex gap-2">
+                    <button
+                      (click)="accept(req.requestId)"
+                      class="rounded-md px-3 py-1.5 text-xs font-medium text-white transition"
+                      style="background-color: #489c58"
+                      onmouseover="this.style.backgroundColor='#3a8449'"
+                      onmouseout="this.style.backgroundColor='#489c58'"
+                    >
+                      Accepter
+                    </button>
+                    <button
+                      (click)="deny(req.requestId)"
+                      class="rounded-md px-3 py-1.5 text-xs font-medium text-white transition"
+                      style="background-color: #b84d4b"
+                      onmouseover="this.style.backgroundColor='#9e3e3c'"
+                      onmouseout="this.style.backgroundColor='#b84d4b'"
+                    >
+                      Refuser
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+            @if (pendingRequests().length === 0) {
+              <tr>
+                <td colspan="4" class="px-4 py-6 text-center text-slate-500">Aucune demande en attente</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Admin management -->
+    <div class="glass-panel overflow-hidden">
+      <div class="px-5 py-4 border-b border-white/10">
+        <h2 class="font-semibold text-white">Gestion rôles admin</h2>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-white/5 text-slate-400 text-xs uppercase">
+            <tr>
+              <th class="px-4 py-3">Nom et prénom</th>
+              <th class="px-4 py-3">Salle</th>
+              <th class="px-4 py-3">Décision</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/10">
+            @for (req of acceptedRequests(); track req.userId + '-' + req.roomId) {
+              <tr>
+                <td class="px-4 py-3 font-semibold text-white">{{ req.userName }}</td>
+                <td class="px-4 py-3 text-slate-300">{{ req.roomName }}</td>
+                <td class="px-4 py-3">
+                  <button
+                    (click)="removeAdmin(req.userId)"
+                    class="rounded-md px-3 py-1.5 text-xs font-medium text-white transition"
+                    style="background-color: #b84d4b"
+                    onmouseover="this.style.backgroundColor='#9e3e3c'"
+                    onmouseout="this.style.backgroundColor='#b84d4b'"
+                  >
+                    Supprimer
+                  </button>
+                </td>
+              </tr>
+            }
+            @if (acceptedRequests().length === 0) {
+              <tr>
+                <td colspan="3" class="px-4 py-6 text-center text-slate-500">Aucun administrateur</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Available rooms & Clients -->
+  <div class="grid gap-6 lg:grid-cols-2">
+
+    <!-- Available rooms -->
+    <div class="glass-panel overflow-hidden">
+      <div class="px-5 py-4 border-b border-white/10">
+        <h2 class="font-semibold text-white">Salles disponibles</h2>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-white/5 text-slate-400 text-xs uppercase">
+            <tr>
+              <th class="px-4 py-3">Salle</th>
+              <th class="px-4 py-3">Adresse</th>
+              <th class="px-4 py-3">Places</th>
+              <th class="px-4 py-3">Décision</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/10">
+            @for (room of availableRooms(); track room.id) {
+              <tr>
+                <td class="px-4 py-3 font-semibold text-white">{{ room.name }}</td>
+                <td class="px-4 py-3 text-slate-300">{{ room.address }}</td>
+                <td class="px-4 py-3 text-slate-300">{{ room.capacity }}</td>
+                <td class="px-4 py-3">
+                  <button
+                    (click)="deleteRoom(room.id)"
+                    class="rounded-md px-3 py-1.5 text-xs font-medium text-white transition"
+                    style="background-color: #b84d4b"
+                    onmouseover="this.style.backgroundColor='#9e3e3c'"
+                    onmouseout="this.style.backgroundColor='#b84d4b'"
+                  >
+                    Supprimer
+                  </button>
+                </td>
+              </tr>
+            }
+            @if (availableRooms().length === 0) {
+              <tr>
+                <td colspan="4" class="px-4 py-6 text-center text-slate-500">Aucune salle disponible</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Clients -->
+    <div class="glass-panel overflow-hidden">
+      <div class="px-5 py-4 border-b border-white/10">
+        <h2 class="font-semibold text-white">Clients</h2>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-white/5 text-slate-400 text-xs uppercase">
+            <tr>
+              <th class="px-4 py-3">Nom</th>
+              <th class="px-4 py-3">Email</th>
+              <th class="px-4 py-3">Age</th>
+              <th class="px-4 py-3">Inscription</th>
+              <th class="px-4 py-3">Décision</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/10">
+            @for (client of clients(); track client.id) {
+              <tr>
+                <td class="px-4 py-3 font-semibold text-white">{{ client.name }}</td>
+                <td class="px-4 py-3 text-slate-300">{{ client.email }}</td>
+                <td class="px-4 py-3 text-slate-300">{{ client.age }}</td>
+                <td class="px-4 py-3 text-slate-300">{{ client.memberSince }}</td>
+                <td class="px-4 py-3">
+                  <button
+                    (click)="deleteUser(client.id)"
+                    class="rounded-md px-3 py-1.5 text-xs font-medium text-white transition"
+                    style="background-color: #b84d4b"
+                    onmouseover="this.style.backgroundColor='#9e3e3c'"
+                    onmouseout="this.style.backgroundColor='#b84d4b'"
+                  >
+                    Supprimer
+                  </button>
+                </td>
+              </tr>
+            }
+            @if (clients().length === 0) {
+              <tr>
+                <td colspan="5" class="px-4 py-6 text-center text-slate-500">Aucun client</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

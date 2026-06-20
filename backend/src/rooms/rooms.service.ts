@@ -38,6 +38,10 @@ export class RoomsService {
     return gamingRoom;
   }
 
+  async delete(id: number): Promise<void> {
+    await this.roomsRepository.delete(id);
+  }
+
   async findRoomEntity(id: number): Promise<RoomEntity> {
     const room = await this.roomsRepository.findOne({
       where: { id },

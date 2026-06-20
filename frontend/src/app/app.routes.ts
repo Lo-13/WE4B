@@ -10,6 +10,8 @@ import { ReservationFormComponent } from './features/reservation-form/reservatio
 import { ReservationsComponent } from './features/reservations/reservations.component';
 import { RoomDetailComponent } from './features/rooms/room-detail/room-detail.component';
 import { RoomsListComponent } from './features/rooms/rooms-list/rooms-list.component';
+import { SuperAdmin } from './features/super-admin/super-admin';
+import { VisualisationSuperadmin } from './features/visualisation-superadmin/visualisation-superadmin';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
@@ -40,12 +42,24 @@ export const routes: Routes = [
     path: 'reservations',
     component: ReservationsComponent,
     canActivate: [roleGuard],
-    data: { roles: ['admin', 'super-admin'] },
+    data: { roles: ['admin'] },
   },
   {
     path: 'profile',
     component: ProfileComponent,
     canActivate: [authGuard],
+  },
+  {
+    path: 'super-admin',
+    component: SuperAdmin,
+    canActivate: [roleGuard],
+    data: { roles: ['super-admin'] },
+  },
+  {
+    path: 'visualisation-superadmin',
+    component: VisualisationSuperadmin,
+    canActivate: [roleGuard],
+    data: { roles: ['super-admin'] },
   },
   { path: '**', redirectTo: 'dashboard' },
 ];

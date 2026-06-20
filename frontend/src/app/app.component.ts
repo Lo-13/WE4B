@@ -18,11 +18,9 @@ export class AppComponent {
 
   readonly user = this.authService.currentUser;
   readonly isAuthenticated = this.authService.isAuthenticated;
-  readonly canManageReservations = computed(() => {
-    const user = this.user();
+  readonly canManageReservations = computed(() => this.user()?.role === 'admin');
 
-    return user?.role === 'admin' || user?.role === 'super-admin';
-  });
+  readonly isSuperAdmin = computed(() => this.user()?.role === 'super-admin');
 
   logout(): void {
     this.authService.logout().subscribe(() => {
