@@ -2,6 +2,7 @@
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AdminRequestModule } from './admin-request/admin-request.module';
 import { AuthModule } from './auth/auth.module';
 import { DatabaseModule } from './database/database.module';
 import { ReservationsModule } from './reservations/reservations.module';
@@ -16,6 +17,7 @@ import { NosqlModule } from './nosql/nosql.module';
     RoomsModule,
     ReservationsModule,
     NosqlModule,
+    AdminRequestModule,
   ],
   controllers: [AppController],
   providers: [AppService],
