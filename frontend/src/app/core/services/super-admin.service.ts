@@ -6,18 +6,14 @@ import { API_BASE_URL } from '../api.config';
 export interface AdminRequestDetail {
   requestId: number;
   userId: number;
-  userName: string;
   roomId: number;
-  roomName: string;
   status: 'pending' | 'accepted' | 'denied';
   createdDate: string;
 }
 
 export interface AdminDetail {
   userId: number;
-  userName: string;
   roomId: number;
-  roomName: string;
 }
 
 export interface ClientDetail {

@@ -16,6 +16,7 @@ export class SuperAdmin implements OnInit {
   pendingRequests = signal<AdminRequestDetail[]>([]);
   acceptedRequests = signal<AdminDetail[]>([]);
   clients = signal<ClientDetail[]>([]);
+  admins = signal<{ id: number; name: string }[]>([]);
   rooms = signal<GamingRoom[]>([]);
 
   availableRooms = computed(() => this.rooms().filter((r) => r.status === 'available'));
@@ -28,8 +29,20 @@ export class SuperAdmin implements OnInit {
   private loadAll(): void {
     this.superAdminService.getPendingRequests().subscribe((r) => this.pendingRequests.set(r));
     this.superAdminService.getAcceptedRequests().subscribe((r) => this.acceptedRequests.set(r));
-    this.superAdminService.getUsers().subscribe(({ clients }) => this.clients.set(clients));
+    this.superAdminService.getUsers().subscribe(({ clients, admins }) => {
+      this.clients.set(clients);
+      this.admins.set(admins);
+    });
     this.roomsService.getRooms().subscribe((r) => this.rooms.set(r));
+  }
+
+  getUserName(userId: number): string {
+    const found = this.clients().find((u) => u.id === userId) ?? this.admins().find((u) => u.id === userId);
+    return found?.name ?? `#${userId}`;
+  }
+
+  getRoomName(roomId: number): string {
+    return this.rooms().find((r) => r.id === roomId)?.name ?? `#${roomId}`;
   }
 
   accept(requestId: number): void {

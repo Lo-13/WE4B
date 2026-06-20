@@ -25,8 +25,8 @@
           <tbody class="divide-y divide-white/10">
             @for (req of pendingRequests(); track req.requestId) {
               <tr>
-                <td class="px-4 py-3 font-semibold text-white">{{ req.userName }}</td>
-                <td class="px-4 py-3 text-slate-300">{{ req.roomName }}</td>
+                <td class="px-4 py-3 font-semibold text-white">{{ getUserName(req.userId) }}</td>
+                <td class="px-4 py-3 text-slate-300">{{ getRoomName(req.roomId) }}</td>
                 <td class="px-4 py-3 text-slate-400">En traitement</td>
                 <td class="px-4 py-3">
                   <div class="flex gap-2">
@@ -79,8 +79,8 @@
           <tbody class="divide-y divide-white/10">
             @for (req of acceptedRequests(); track req.userId + '-' + req.roomId) {
               <tr>
-                <td class="px-4 py-3 font-semibold text-white">{{ req.userName }}</td>
-                <td class="px-4 py-3 text-slate-300">{{ req.roomName }}</td>
+                <td class="px-4 py-3 font-semibold text-white">{{ getUserName(req.userId) }}</td>
+                <td class="px-4 py-3 text-slate-300">{{ getRoomName(req.roomId) }}</td>
                 <td class="px-4 py-3">
                   <button
                     (click)="removeAdmin(req.userId)"
