@@ -1,14 +1,15 @@
-import { AsyncPipe, CurrencyPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map, switchMap } from 'rxjs';
 
 import { RoomsService } from '../../../core/services/rooms.service';
+import { GamingRoom, RoomReview } from '../../../core/services/rooms.service';
 
 @Component({
   selector: 'app-room-detail',
   standalone: true,
-  imports: [AsyncPipe, CurrencyPipe, RouterLink],
+  imports: [AsyncPipe, CurrencyPipe, DatePipe, RouterLink],
   templateUrl: './room-detail.component.html',
 })
 export class RoomDetailComponent {
@@ -19,4 +20,8 @@ export class RoomDetailComponent {
     map((params) => Number(params.get('id'))),
     switchMap((id) => this.roomsService.getRoomById(id)),
   );
+
+  roomReviews(room: GamingRoom): RoomReview[] {
+    return room.reviews ?? [];
+  }
 }

@@ -90,6 +90,17 @@ export class NosqlService {
     });
   }
 
+  findLatestFileForEntity(linkedEntity: string, linkedEntityId: number) {
+    if (!this.fileMetadataModel) {
+      return null;
+    }
+
+    return this.fileMetadataModel
+      .findOne({ linkedEntity, linkedEntityId })
+      .sort({ createdAt: -1 })
+      .lean();
+  }
+
   findActivityLogs() {
     if (!this.activityLogModel) {
       return [];

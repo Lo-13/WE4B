@@ -1,4 +1,12 @@
-﻿export type RoomStatus = 'available' | 'maintenance' | 'reserved';
+export type RoomStatus = 'available' | 'maintenance' | 'reserved';
+
+export interface RoomReview {
+  id: number;
+  customerName: string;
+  rating: number;
+  content: string;
+  date: string;
+}
 
 export interface GamingRoom {
   id: number;
@@ -14,4 +22,5 @@ export interface GamingRoom {
   description: string;
   latitude: number;
   longitude: number;
+  reviews: RoomReview[];
 }

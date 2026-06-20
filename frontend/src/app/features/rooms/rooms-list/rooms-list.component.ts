@@ -42,7 +42,7 @@ export class RoomsListComponent {
       return rooms
         .filter((room) => city === 'all' || room.city === city)
         .filter((room) => {
-          const searchableText = `${room.name} ${room.city} ${room.equipment.join(' ')}`.toLowerCase();
+          const searchableText = `${room.name} ${room.city} ${room.address} ${room.equipment.join(' ')} ${room.games.join(' ')}`.toLowerCase();
           return searchableText.includes(normalizedSearch);
         })
         .sort((first, second) => this.sortRooms(first, second, sortMode));
