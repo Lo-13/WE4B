@@ -9,7 +9,7 @@
       }
     </h1>
     <p class="mt-4 max-w-2xl leading-7 text-slate-300">
-      Consultez les salles disponibles, reservez un creneau et suivez vos
+      Consultez les salles disponibles, réservez un créneau et suivez vos
       demandes depuis votre espace.
     </p>
 
@@ -18,14 +18,14 @@
       @if (!user()) {
         <a class="btn-secondary" routerLink="/login"> Se connecter </a>
       }
-        @if (canManageReservations()) {
-            <a class="btn-secondary" routerLink="/reservations">
-                Gestion des reservations
-            </a>
-            <a class="btn-secondary" routerLink="/admin-logs">
-                Activité du site
-            </a>
-        }
+      @if (isSuperAdmin()) {
+        <a class="btn-secondary" routerLink="/super-admin">Gestion super admin</a>
+        <a class="btn-secondary" routerLink="/visualisation-superadmin">Visualisation super admin</a>
+        <a class="btn-secondary" routerLink="/admin-logs">Activité du site</a>
+      } @else if (canManageReservations()) {
+        <a class="btn-secondary" routerLink="/reservations">Gestion des reservations</a>
+        <a class="btn-secondary" routerLink="/admin-logs">Activité du site</a>
+      }
     </div>
   </div>
 </section>

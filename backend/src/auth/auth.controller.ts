@@ -1,4 +1,4 @@
-import { Body, Controller, Get, ParseIntPipe, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
@@ -28,5 +28,20 @@ export class AuthController {
     @Query('email') email?: string,
   ) {
     return this.authService.getCurrentUser(userId, email);
+  }
+
+  @Get('users')
+  getUsers() {
+    return this.authService.getUsers();
+  }
+
+  @Delete('users/:id')
+  deleteUser(@Param('id', ParseIntPipe) id: number) {
+    return this.authService.deleteUser(id);
+  }
+
+  @Patch('users/:id/remove-admin')
+  removeAdminRole(@Param('id', ParseIntPipe) id: number) {
+    return this.authService.removeAdminRole(id);
   }
 }

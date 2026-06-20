@@ -8,6 +8,8 @@ import { ReservationEntity } from './entities/reservation.entity';
 import { RoomEntity } from './entities/room.entity';
 import { TypeMaterialEntity } from './entities/type-material.entity';
 import { UserEntity } from './entities/user.entity';
+import { AdminRequestEntity } from '../admin-request/admin-request.entity';
+import { RoomAdministratorEntity } from './entities/room-administrator.entity';
 
 @Module({
   imports: [
@@ -28,7 +30,9 @@ import { UserEntity } from './entities/user.entity';
           ReservationEntity,
           RoomEntity,
           TypeMaterialEntity,
-          UserEntity
+          UserEntity,
+          AdminRequestEntity,
+          RoomAdministratorEntity,
         ],
         synchronize: false,
         charset: 'utf8mb4',

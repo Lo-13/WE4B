@@ -1,6 +1,6 @@
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { Body, Controller, Get, Param, ParseIntPipe, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { RoomsService } from './rooms.service';
@@ -36,5 +36,10 @@ export class RoomsController {
   }))
   create(@Body() createRoomDto: CreateRoomDto, @UploadedFile() image?: UploadedRoomFile) {
     return this.roomsService.create(createRoomDto, image);
+  }
+
+  @Delete(':id')
+  delete(@Param('id', ParseIntPipe) id: number) {
+    return this.roomsService.delete(id);
   }
 }

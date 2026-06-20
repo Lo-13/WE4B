@@ -127,6 +127,31 @@ export class AuthService {
     return this.toCurrentUser(user);
   }
 
+  async getUsers(): Promise<{ clients: object[]; admins: object[] }> {
+    const users = await this.usersRepository.find({ order: { registrationDate: 'DESC' } });
+    const clients = users
+      .filter((u) => u.role === 'user')
+      .map((u) => ({
+        id: u.id,
+        name: `${u.name} ${u.lastName}`,
+        email: u.email,
+        age: u.age,
+        memberSince: u.registrationDate.toISOString().substring(0, 10),
+      }));
+    const admins = users
+      .filter((u) => u.role === 'admin')
+      .map((u) => ({ id: u.id, name: `${u.name} ${u.lastName}`, email: u.email }));
+    return { clients, admins };
+  }
+
+  async deleteUser(id: number): Promise<void> {
+    await this.usersRepository.delete(id);
+  }
+
+  async removeAdminRole(id: number): Promise<void> {
+    await this.usersRepository.update(id, { role: 'user' });
+  }
+
   private toCurrentUser(user: UserEntity): CurrentUser {
     return {
       id: user.id,

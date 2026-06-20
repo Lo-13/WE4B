@@ -1,0 +1,26 @@
+<section class="app-page space-y-8">
+  <!-- Header -->
+  <div>
+    <h1 class="text-3xl font-bold text-white">Visualisation Super-admin</h1>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+    <div class="rounded-xl bg-slate-800/60 border border-white/10 p-5">
+      <p class="text-4xl font-bold text-purple-400">{{ rooms().length }}</p>
+      <p class="mt-1 text-sm text-slate-400">Salles</p>
+    </div>
+    <div class="rounded-xl bg-slate-800/60 border border-white/10 p-5">
+      <p class="text-4xl font-bold text-purple-400">{{ availableRooms().length }}</p>
+      <p class="mt-1 text-sm text-slate-400">Salles disponibles</p>
+    </div>
+    <div class="rounded-xl bg-slate-800/60 border border-white/10 p-5">
+      <p class="text-4xl font-bold text-purple-400">{{ adminCount() }}</p>
+      <p class="mt-1 text-sm text-slate-400">Admins</p>
+    </div>
+    <div class="rounded-xl bg-slate-800/60 border border-white/10 p-5">
+      <p class="text-4xl font-bold text-purple-400">{{ clients().length }}</p>
+      <p class="mt-1 text-sm text-slate-400">Utilisateurs</p>
+    </div>
+  </div>
+</section>

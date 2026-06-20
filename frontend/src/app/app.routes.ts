@@ -12,6 +12,8 @@ import { RoomDetailComponent } from './features/rooms/room-detail/room-detail.co
 import { RoomCreateComponent } from './features/rooms/room-create/room-create.component';
 import { RoomsListComponent } from './features/rooms/rooms-list/rooms-list.component';
 import { AdminLogsComponent } from './features/admin-logs/admin-logs.component';
+import { SuperAdmin } from './features/super-admin/super-admin';
+import { VisualisationSuperadmin } from './features/visualisation-superadmin/visualisation-superadmin';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
@@ -48,7 +50,7 @@ export const routes: Routes = [
     path: 'reservations',
     component: ReservationsComponent,
     canActivate: [roleGuard],
-    data: { roles: ['admin', 'super-admin'] },
+    data: { roles: ['admin'] },
   },
     {
         path: 'admin-logs',
@@ -60,6 +62,18 @@ export const routes: Routes = [
     path: 'profile',
     component: ProfileComponent,
     canActivate: [authGuard],
+  },
+  {
+    path: 'super-admin',
+    component: SuperAdmin,
+    canActivate: [roleGuard],
+    data: { roles: ['super-admin'] },
+  },
+  {
+    path: 'visualisation-superadmin',
+    component: VisualisationSuperadmin,
+    canActivate: [roleGuard],
+    data: { roles: ['super-admin'] },
   },
   { path: '**', redirectTo: 'dashboard' },
 ];
